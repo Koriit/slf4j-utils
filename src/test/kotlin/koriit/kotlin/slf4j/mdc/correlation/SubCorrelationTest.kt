@@ -20,13 +20,13 @@ internal class SubCorrelationTest {
         assertCorrelation()
         assertSubCorrelation(null)
 
-        val scope = CoroutineScope(withSubCorrelation())
+        val scope = CoroutineScope(subCorrelated())
         val correlation1 = scope.coroutineContext[SubCorrelationId]!!.value
         runBlocking {
             assertCorrelation()
             assertSubCorrelation(null)
 
-            scope.launch(withSubCorrelation()) {
+            scope.launch(subCorrelated()) {
                 val correlation2 = coroutineContext[SubCorrelationId]!!.value
                 assertNotEquals(correlation1, correlation2)
 
