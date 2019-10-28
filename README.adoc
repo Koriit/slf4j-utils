@@ -1,0 +1,110 @@
+= SLF4J Utils
+
+SLF4J utils for Kotlin.
+
+== Correlation
+
+=== Correlated
+[source,kotlin]
+----
+// ...
+// Threaded code (Correlation #1)
+// ...
+
+val job = launch(correlated()) {
+    // (Correlation #2)
+    while (isActive) {
+        withCorrelation {
+            // (Correlation #3)
+        }
+    }
+    // (Correlation #2)
+}
+
+// ...
+// Threaded code (Correlation #1)
+// ...
+----
+
+=== SubCorrelated
+[source,kotlin]
+----
+// ...
+// Threaded code (Correlation #1, no SubCorrelation)
+// ...
+
+val job = launch(subCorrelated()) {
+    // (Correlation #1, SubCorrelation #1)
+    while (isActive) {
+        withSubCorrelation {
+            // (Correlation #1, SubCorrelation #2)
+        }
+    }
+    // (Correlation #1, SubCorrelation #2)
+}
+
+// ...
+// Threaded code (Correlation #1, no SubCorrelation)
+// ...
+----
+
+=== ContinueCorrelation
+[source,kotlin]
+----
+// ...
+// Threaded code (Correlation #1, no SubCorrelation)
+// ...
+
+val job = async(continueCorrelation(), start=LAZY) {
+    // (Correlation #1, no SubCorrelation)
+}
+
+// ...
+// Other threaded code (Correlation #2, no SubCorrelation)
+// ...
+launch(subCorrelated()) {
+    // (Correlation #2, SubCorrelation #1)
+    continueCorrelation((job as Continuation<*>).context) {
+        // (Correlation #1, no SubCorrelation)
+        val value = job.await()
+        // (Correlation #1, no SubCorrelation)
+    }
+    // (Correlation #2, SubCorrelation #1)
+}
+
+----
+
+=== ThreadCorrelation
+[source,kotlin]
+----
+fun main() {
+    // (no Correlation)
+    val correlationId = correlateThread()
+    // (Correlation #1)
+
+    Thread {
+        // (no Correlation)
+        correlateThread(correlationId)
+        // (Correlation #1)
+    }.run()
+
+    // (Correlation #1)
+
+    Thread {
+        // (no Correlation)
+        subCorrelateThread(correlationId)
+        // (Correlation #1, SubCorrelation #1)
+    }.run()
+
+    // (Correlation #1)
+
+    Thread {
+        // (no Correlation)
+        correlateThread()
+        // (Correlation #2)
+    }.run()
+
+    // (Correlation #1)
+    // ...
+}
+----
