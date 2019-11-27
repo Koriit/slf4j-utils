@@ -3,11 +3,13 @@
 /////////////
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.50'
+    id "org.jetbrains.kotlin.jvm" version "1.3.50"
     id "com.jfrog.bintray" version "1.8.4"
     id "java-library"
     id "maven-publish"
     id "jacoco"
+    id "org.jlleitschuh.gradle.ktlint" version "9.1.1"
+    id "io.gitlab.arturbosch.detekt" version "1.2.0"
 }
 
 //////////////////
@@ -26,11 +28,11 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2"
 
     // LOGGING
-    api 'org.slf4j:slf4j-api:1.7.28'
+    api "org.slf4j:slf4j-api:1.7.28"
 
     // TESTING
     testImplementation "org.junit.jupiter:junit-jupiter:5.5.0"
-    testImplementation 'org.slf4j:slf4j-simple:1.7.28'
+    testImplementation "org.slf4j:slf4j-simple:1.7.28"
 }
 
 /////////////
@@ -42,15 +44,15 @@ targetCompatibility = 1.8
 
 compileKotlin {
     kotlinOptions {
-        freeCompilerArgs = ['-Xjsr305=strict']
-        jvmTarget = '1.8'
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
     }
 }
 
 compileTestKotlin {
     kotlinOptions {
-        freeCompilerArgs = ['-Xjsr305=strict']
-        jvmTarget = '1.8'
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
     }
 }
 
@@ -58,9 +60,18 @@ compileTestKotlin {
 // TEST //
 //////////
 
+ktlint {
+    verbose = true
+}
+
+detekt {
+    config = files("detekt.yml")
+    buildUponDefaultConfig = true
+}
+
 test {
     useJUnitPlatform {
-        excludeTags project.hasProperty('fast') ? "Slow" : "None"
+        excludeTags project.hasProperty("fast") ? "Slow" : "None"
     }
 }
 
@@ -76,12 +87,12 @@ test.finalizedBy(jacocoTestReport)
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
-    archiveClassifier = 'sources'
+    archiveClassifier = "sources"
 }
 
 task javadocJar(type: Jar) {
     from javadoc
-    archiveClassifier = 'javadoc'
+    archiveClassifier = "javadoc"
 }
 
 publishing {
@@ -94,8 +105,8 @@ publishing {
             artifact sourcesJar
             artifact javadocJar
             pom {
-                name = 'SLF4J Utils'
-                description = 'SLF4J utils for Kotlin'
+                name = "SLF4J Utils"
+                description = "SLF4J utils for Kotlin"
                 url = "https://github.com/Koriit/slf4j-utils"
                 licenses {
                     license {
@@ -109,13 +120,13 @@ publishing {
 }
 
 bintray {
-    user = System.getProperty('bintray.user')
-    key = System.getProperty('bintray.key')
-    publications = ['bintrayMaven']
+    user = System.getProperty("bintray.user")
+    key = System.getProperty("bintray.key")
+    publications = ["bintrayMaven"]
 
     pkg {
-        repo = 'kotlin'
-        name = 'slf4j-utils'
+        repo = "kotlin"
+        name = "slf4j-utils"
         version {
             name = project.version
             released  = new Date()
@@ -131,4 +142,8 @@ task getVersion {
     doLast {
         print project.version
     }
+}
+
+task fmt {
+    dependsOn ktlintFormat
 }
