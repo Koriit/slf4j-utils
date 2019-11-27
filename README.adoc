@@ -1,8 +1,80 @@
 = SLF4J Utils
 
+image:https://www.travis-ci.org/Koriit/slf4j-utils.svg?branch=master["Build Status", link="https://www.travis-ci.org/Koriit/slf4j-utils"]
+image:https://www.codefactor.io/repository/github/koriit/slf4j-utils/badge[CodeFactor,link=https://www.codefactor.io/repository/github/koriit/slf4j-utils]
+image:https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg[ktlint,link=https://ktlint.github.io/]
+
+image:https://api.bintray.com/packages/koriit/kotlin/slf4j-utils/images/download.svg[Download, link=https://bintray.com/koriit/kotlin/slf4j-utils/_latestVersion]
+image:https://img.shields.io/github/license/koriit/slf4j-utils[GitHub]
+
 SLF4J utils for Kotlin.
 
+== Logger factory
+With Kotlin lambdas, creating logger object can be as simple as `logger {}`.
+
+Please, note that this function is opinionated. Logger name is fully qualified name of
+class/file where logger object is defined.
+This allows precise control over your loggers.
+
+== Fatal Logs
+SLF4J has limited levels of logging and does not allow creating any custom levels.
+Developers coming from many backgrounds tend to notice that certain errors -
+a.k.a. FATAL - are more important than the other and require faster reaction.
+
+According to SLF4J's http://www.slf4j.org/faq.html#fatal[FAQ]:
+[quote]
+The Marker interface, part of the org.slf4j package, renders the FATAL level largely redundant. If a given error requires attention beyond that allocated for ordinary errors, simply mark the logging statement with a specially designated marker which can be named "FATAL" or any other name to your liking.
+
+However, preparing such marker and adding it to every fatal error can be a bit of tedious.
+Thus this library provides a set of `fatal` extension functions that do this for you.
+
+[WARNING]
+Fatal logs are still logged as `ERROR`. Whether this difference is visible in the
+output depends on your format, if it includes markers in some way.
+
+== Exception Handling
+This library provides `watch` and `watched` extension functions on the `Logger` to
+create simple exception handler that just logs caught exception and eats it, or
+shuts down the JVM.
+
+It is useful in concurrent, long-lived workers, for example:
+[source,kotlin]
+----
+private val LOG = logger {}
+
+private val jobQueue = Channel<Job>(UNLIMITED)
+
+private val worker = launch(correlated()) {
+    with(LOG) {
+        info("Started worker")
+        watch(fatal = true) {
+            for (job in jobQueue) {
+                continueCorrelation((job as Continuation<*>).context) {
+                    watch(ignore = listOf(MyCancellation::class)) {
+                        job.await()
+                    }
+                }
+            }
+        }
+        jobQueue.close()
+        info("Closed worker")
+    }
+}
+----
+
 == Correlation
+
+It may prove challenging to search for all logs related to particular process, especially
+in applications which use any kind of concurrency as it leads to interleaving of logs.
+
+To solve this issue it is possible to add special correlation id to logs which belongs to the same process.
+
+The easiest way to achieve that is using thread-local MDC provided by SLF4j.
+
+However, it is a bit harder with Kotlin's coroutines as usually they are not bound to any specific thread during its execution.
+Proper solution requires building correlated coroutine contexts.
+
+Following functions ease building of said coroutine contexts and correlating threads in general.
 
 === Correlated
 [source,kotlin]
@@ -27,6 +99,9 @@ val job = launch(correlated()) {
 ----
 
 === SubCorrelated
+[NOTE]
+Sub-correlation can be nested only by one level. This is by design.
+
 [source,kotlin]
 ----
 // ...

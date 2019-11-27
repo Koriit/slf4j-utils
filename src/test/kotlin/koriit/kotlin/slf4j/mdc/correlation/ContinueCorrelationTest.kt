@@ -1,5 +1,6 @@
 package koriit.kotlin.slf4j.mdc.correlation
 
+import kotlin.coroutines.Continuation
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -8,7 +9,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import org.slf4j.MDC
-import kotlin.coroutines.Continuation
 
 internal class ContinueCorrelationTest {
 

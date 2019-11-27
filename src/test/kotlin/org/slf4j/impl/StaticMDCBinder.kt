@@ -16,10 +16,10 @@ class StaticMDCBinder private constructor() {
     }
 
     fun getMDCA(): MDCAdapter {
-        return BasicMDCAdapter();
+        return BasicMDCAdapter()
     }
 
     fun getMDCAdapterClassStr(): String {
-        return BasicMDCAdapter::class.java.name;
+        return BasicMDCAdapter::class.java.name
     }
 }

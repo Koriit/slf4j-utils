@@ -6,6 +6,9 @@ import org.slf4j.Logger
 import org.slf4j.Marker
 import org.slf4j.MarkerFactory
 
+/**
+ * SLF4J marker for fatal logs.
+ */
 val FATAL: Marker = MarkerFactory.getMarker("FATAL")
 
 /**
@@ -28,7 +31,7 @@ inline fun Logger.fatal(msg: String) = error(FATAL, msg)
  * This form avoids superfluous object creation when the logger is disabled for the ERROR level with FATAL marker.
  *
  * @param format the format string
- * @param arg    the argument
+ * @param arg the argument
  */
 inline fun Logger.fatal(format: String, arg: Any?) = error(FATAL, format, arg)
 
@@ -38,8 +41,8 @@ inline fun Logger.fatal(format: String, arg: Any?) = error(FATAL, format, arg)
  * This form avoids superfluous object creation when the logger is disabled for the ERROR level with FATAL marker.
  *
  * @param format the format string
- * @param arg1   the first argument
- * @param arg2   the second argument
+ * @param arg1 the first argument
+ * @param arg2 the second argument
  */
 inline fun Logger.fatal(format: String, arg1: Any?, arg2: Any?) = error(FATAL, format, arg1, arg2)
 
@@ -50,10 +53,10 @@ inline fun Logger.fatal(format: String, arg1: Any?, arg2: Any?) = error(FATAL, f
  * is disabled for the ERROR level with FATAL marker. However, this variant incurs the hidden
  * (and relatively small) cost of creating an `Object[]` before invoking the method,
  * even if this logger is disabled for ERROR with FATAL marker. The variants taking
- * [one][.error] and [two][.error]
+ * [one][Logger.fatal] and [two][Logger.fatal]
  * arguments exist solely in order to avoid this hidden cost.
  *
- * @param format    the format string
+ * @param format the format string
  * @param arguments a list of 3 or more arguments
  */
 inline fun Logger.fatal(format: String, vararg arguments: Any?) = error(FATAL, format, *arguments)
@@ -62,6 +65,6 @@ inline fun Logger.fatal(format: String, vararg arguments: Any?) = error(FATAL, f
  * Log an exception (throwable) at the ERROR level with FATAL marker and with an accompanying message.
  *
  * @param msg the message accompanying the exception
- * @param t   the exception (throwable) to log
+ * @param t the exception (throwable) to log
  */
 inline fun Logger.fatal(msg: String, t: Throwable) = error(FATAL, msg, t)

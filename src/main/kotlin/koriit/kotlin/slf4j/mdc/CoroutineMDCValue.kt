@@ -1,14 +1,20 @@
 package koriit.kotlin.slf4j.mdc
 
-import kotlinx.coroutines.ThreadContextElement
-import org.slf4j.MDC
 import kotlin.coroutines.AbstractCoroutineContextElement
 import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.ThreadContextElement
+import org.slf4j.MDC
 
+/**
+ * Abstract coroutine context element that will make sure that given name-value pair
+ * is present in the SLF4J MDC when coroutine is running.
+ *
+ * Concrete implementations should provide static name.
+ */
 abstract class CoroutineMDCValue(
-        val name: String,
-        open val value: String?,
-        val contextKey: CoroutineContext.Key<*>
+    val name: String,
+    open val value: String?,
+    val contextKey: CoroutineContext.Key<*>
 ) : ThreadContextElement<String?>, AbstractCoroutineContextElement(contextKey) {
 
     override fun updateThreadContext(context: CoroutineContext): String? {

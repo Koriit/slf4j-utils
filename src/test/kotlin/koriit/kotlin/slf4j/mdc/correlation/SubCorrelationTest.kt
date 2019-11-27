@@ -55,5 +55,4 @@ internal class SubCorrelationTest {
     private fun assertSubCorrelation(correlationId: String?) {
         assertEquals(correlationId, MDC.get(MDC_SUB_CORRELATION_KEY))
     }
-
 }

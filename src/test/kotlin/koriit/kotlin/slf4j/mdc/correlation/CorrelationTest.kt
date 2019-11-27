@@ -47,5 +47,4 @@ internal class CorrelationTest {
     private fun assertCorrelation(correlationId: String) {
         assertEquals(correlationId, MDC.get(MDC_CORRELATION_KEY))
     }
-
 }

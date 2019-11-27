@@ -1,16 +1,16 @@
 package koriit.kotlin.slf4j.mdc
 
 import koriit.kotlin.slf4j.mdc.correlation.SubCorrelationId
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.slf4j.MDC
-import kotlin.coroutines.CoroutineContext
 
 internal class CoroutineMDCValueTest {
 
-    class TestValue() : CoroutineMDCValue("TestValue", "TestValue", TestValue) {
+    class TestValue : CoroutineMDCValue("TestValue", "TestValue", TestValue) {
         companion object Key : CoroutineContext.Key<SubCorrelationId>
     }
 
