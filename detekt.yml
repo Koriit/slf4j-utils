@@ -1,31 +1,6 @@
 build:
   maxIssues: 0
 
-config:
-  validation: true
-  # when writing own rules with new properties, exclude the property path e.g.: "my_rule_set,.*>.*>[my_property]"
-  excludes: ""
-
-processors:
-  active: true
-  exclude:
-  # - 'DetektProgressListener'
-  # - 'FunctionCountProcessor'
-  # - 'PropertyCountProcessor'
-  # - 'ClassCountProcessor'
-  # - 'PackageCountProcessor'
-  # - 'KtFileCountProcessor'
-
-console-reports:
-  active: true
-  exclude:
-  #  - 'ProjectStatisticsReport'
-  #  - 'ComplexityReport'
-  #  - 'NotificationReport'
-  #  - 'FindingsReport'
-     - 'FileBasedFindingsReport'
-  #  - 'BuildFailureReport'
-
 comments:
   CommentOverPrivateFunction:
     active: true
