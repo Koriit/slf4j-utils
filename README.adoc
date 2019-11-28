@@ -38,6 +38,8 @@ create simple exception handler that just logs caught exception and eats it, or
 shuts down the JVM.
 
 It is useful in concurrent, long-lived workers, for example:
+
+.Logger.watch
 [source,kotlin]
 ----
 private val LOG = logger {}
@@ -60,6 +62,13 @@ private val worker = launch(correlated()) {
         info("Closed worker")
     }
 }
+----
+
+.Logger.watched
+[source,kotlin]
+----
+// Ktor config
+parentCoroutineContext += continueCorrelation() + LOG.watched(shutdown = true)
 ----
 
 == Correlation
