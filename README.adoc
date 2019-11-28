@@ -67,7 +67,7 @@ private val worker = launch(correlated()) {
 It may prove challenging to search for all logs related to particular process, especially
 in applications which use any kind of concurrency as it leads to interleaving of logs.
 
-To solve this issue it is possible to add special correlation id to logs which belongs to the same process.
+To solve this issue it is possible to add special correlation id to logs which belong to the same process.
 
 The easiest way to achieve that is using thread-local MDC provided by SLF4j.
 
@@ -167,7 +167,7 @@ fun main() {
 
     Thread {
         // (no Correlation)
-        subCorrelateThread(correlationId)
+        subCorrelateThread(correlationId = correlationId)
         // (Correlation #1, SubCorrelation #1)
     }.run()
 
