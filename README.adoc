@@ -16,6 +16,12 @@ Please, note that this function is opinionated. Logger name is fully qualified n
 class/file where logger object is defined.
 This allows precise control over your loggers.
 
+== Bridges
+This library also includes bridges that intercept JUL, JCL and Log4J log statements and pass them to SLF4J.
+
+This is handy as there are many libraries and frameworks that do not use SLF4J
+and we usually want to see/control *all* of our logs.
+
 == Fatal Logs
 SLF4J has limited levels of logging and does not allow creating any custom levels.
 Developers coming from many backgrounds tend to notice that certain errors -
