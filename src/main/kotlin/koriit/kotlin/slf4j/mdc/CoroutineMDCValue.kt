@@ -10,6 +10,10 @@ import org.slf4j.MDC
  * is present in the SLF4J MDC when coroutine is running.
  *
  * Concrete implementations should provide static name.
+ *
+ * @property name MDC key
+ * @property value MDC value
+ * @property contextKey The reference that is going to be a context key for this value
  */
 abstract class CoroutineMDCValue(
     val name: String,

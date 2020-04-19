@@ -10,6 +10,8 @@ const val MDC_CORRELATION_KEY = "correlationId"
 
 /**
  * Coroutine Context element holding correlation id.
+ *
+ * @property value The correlation id that is going to be stored with this context value
  */
 internal class CorrelationId(
     override val value: String
