@@ -10,9 +10,9 @@ image:https://img.shields.io/github/license/koriit/slf4j-utils[GitHub]
 SLF4J utils for Kotlin.
 
 == Logger factory
-With Kotlin lambdas, creating logger object can be as simple as `logger {}`.
+With Kotlin lambdas, creating a logger object can be as simple as `logger {}`.
 
-Please, note that this function is opinionated. Logger name is fully qualified name of
+Please, note that this function is opinionated. Logger name is a fully qualified name of
 class/file where logger object is defined.
 This allows precise control over your loggers.
 
@@ -25,18 +25,18 @@ and we usually want to see/control *all* of our logs.
 == Fatal Logs
 SLF4J has limited levels of logging and does not allow creating any custom levels.
 Developers coming from many backgrounds tend to notice that certain errors -
-a.k.a. FATAL - are more important than the other and require faster reaction.
+a.k.a. FATAL - are more important than the other and require a faster reaction.
 
 According to SLF4J's http://www.slf4j.org/faq.html#fatal[FAQ]:
 [quote]
 The Marker interface, part of the org.slf4j package, renders the FATAL level largely redundant. If a given error requires attention beyond that allocated for ordinary errors, simply mark the logging statement with a specially designated marker which can be named "FATAL" or any other name to your liking.
 
-However, preparing such marker and adding it to every fatal error can be a bit of tedious.
+However, preparing such a marker and adding it to every fatal error can be a bit of tedious.
 Thus this library provides a set of `fatal` extension functions that do this for you.
 
 [WARNING]
 Fatal logs are still logged as `ERROR`. Whether this difference is visible in the
-output depends on your format, if it includes markers in some way.
+output depends on your format, whether it includes markers in some way.
 
 == Exception Handling
 This library provides `watch` and `watched` extension functions on the `Logger` to
@@ -79,17 +79,17 @@ parentCoroutineContext += continueCorrelation() + LOG.watched(shutdown = true)
 
 == Correlation
 
-It may prove challenging to search for all logs related to particular process, especially
-in applications which use any kind of concurrency as it leads to interleaving of logs.
+It may prove challenging to search for all logs related to a particular process, especially
+in applications which use any kind of concurrency as it leads to the interleaving of logs.
 
 To solve this issue it is possible to add special correlation id to logs which belong to the same process.
 
-The easiest way to achieve that is using thread-local MDC provided by SLF4j.
+The easiest way to achieve that is by using thread-local MDC provided by SLF4j.
 
 However, it is a bit harder with Kotlin's coroutines as usually they are not bound to any specific thread during its execution.
-Proper solution requires building correlated coroutine contexts.
+The proper solution requires building correlated coroutine contexts.
 
-Following functions ease building of said coroutine contexts and correlating threads in general.
+The following functions ease the building of said coroutine contexts and correlating threads in general.
 
 === Correlated
 [source,kotlin]
@@ -123,7 +123,7 @@ Sub-correlation can be nested only by one level. This is by design.
 // Threaded code (Correlation #1, no SubCorrelation)
 // ...
 
-val job = launch(subCorrelated()) {
+val job = launch(continueCorrelation() + subCorrelated()) {
     // (Correlation #1, SubCorrelation #1)
     while (isActive) {
         withSubCorrelation {
@@ -145,21 +145,21 @@ val job = launch(subCorrelated()) {
 // Threaded code (Correlation #1, no SubCorrelation)
 // ...
 
-val job = async(continueCorrelation(), start=LAZY) {
-    // (Correlation #1, no SubCorrelation)
+val job = async(continueCorrelation() + subCorrelated(), start=LAZY) {
+    // (Correlation #1, SubCorrelation #1)
 }
 
 // ...
 // Other threaded code (Correlation #2, no SubCorrelation)
 // ...
-launch(subCorrelated()) {
-    // (Correlation #2, SubCorrelation #1)
+launch(continueCorrelation() + subCorrelated()) {
+    // (Correlation #2, SubCorrelation #2)
     continueCorrelation((job as Continuation<*>).context) {
-        // (Correlation #1, no SubCorrelation)
+        // (Correlation #1, SubCorrelation #1)
         val value = job.await()
-        // (Correlation #1, no SubCorrelation)
+        // (Correlation #1, SubCorrelation #1)
     }
-    // (Correlation #2, SubCorrelation #1)
+    // (Correlation #2, SubCorrelation #2)
 }
 
 ----
@@ -182,7 +182,7 @@ fun main() {
 
     Thread {
         // (no Correlation)
-        subCorrelateThread(correlationId = correlationId)
+        correlateThread(correlationId = correlationId, subCorrelationId = newCorrelationId())
         // (Correlation #1, SubCorrelation #1)
     }.run()
 

@@ -1,8 +1,8 @@
 package koriit.kotlin.slf4j.mdc.correlation
 
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Creates new context element with current correlation and optional sub-correlation.

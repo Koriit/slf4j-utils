@@ -1,9 +1,9 @@
 package koriit.kotlin.slf4j.mdc
 
-import kotlin.coroutines.AbstractCoroutineContextElement
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.ThreadContextElement
 import org.slf4j.MDC
+import kotlin.coroutines.AbstractCoroutineContextElement
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Abstract coroutine context element that will make sure that given name-value pair

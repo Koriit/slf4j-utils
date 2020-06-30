@@ -2,7 +2,6 @@ package koriit.kotlin.slf4j.mdc.correlation
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.slf4j.MDC
 
 internal class ThreadCorrelationTest {
 
@@ -17,11 +16,35 @@ internal class ThreadCorrelationTest {
         assertCorrelation(correlationId, subCorrelationId)
 
         clearThreadCorrelation()
+    }
+
+    @Test
+    fun `should clear thread correlation`() {
+        val correlationId = correlateThread()
+        val subCorrelationId = subCorrelateThread()
+
+        assertCorrelation(correlationId, subCorrelationId)
+
+        clearThreadSubCorrelation()
+        assertCorrelation(correlationId, null)
+
+        subCorrelateThread()
+        correlateThread()
+        assertSubCorrelation(null)
+
+        subCorrelateThread()
+        clearThreadCorrelation()
         assertCorrelation(null, null)
     }
 
-    private fun assertCorrelation(correlationId: String?, subCorrelationId: String?) {
-        assertEquals(correlationId, MDC.get(MDC_CORRELATION_KEY))
-        assertEquals(subCorrelationId, MDC.get(MDC_SUB_CORRELATION_KEY))
+    @Test
+    fun `should return correlation id`() {
+        val myCorrelation = correlateThread()
+        val mySubCorrelation = subCorrelateThread()
+
+        assertEquals(myCorrelation, correlationId)
+        assertEquals(mySubCorrelation, subCorrelationId)
+
+        clearThreadCorrelation()
     }
 }

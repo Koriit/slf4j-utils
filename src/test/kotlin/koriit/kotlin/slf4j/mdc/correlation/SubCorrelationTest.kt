@@ -3,56 +3,46 @@ package koriit.kotlin.slf4j.mdc.correlation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
-import org.slf4j.MDC
 
 internal class SubCorrelationTest {
 
     @Test
     fun `should add sub correlation`() {
-        val correlationId = correlateThread()
+        correlateThread()
+        val subCorrelation1 = subCorrelateThread()
+        assertSubCorrelation(subCorrelation1)
 
-        fun assertCorrelation() {
-            assertEquals(correlationId, MDC.get(MDC_CORRELATION_KEY))
-        }
-        assertCorrelation()
-        assertSubCorrelation(null)
-
-        val scope = CoroutineScope(subCorrelated())
-        val correlation1 = scope.coroutineContext[SubCorrelationId]!!.value
+        val scope = CoroutineScope(continueCorrelation())
         runBlocking {
-            assertCorrelation()
-            assertSubCorrelation(null)
+            // should have the same correlation as the wrapping thread
+            assertSubCorrelation(subCorrelation1)
 
+            // should generate new sub-correlation id
             scope.launch(subCorrelated()) {
-                val correlation2 = coroutineContext[SubCorrelationId]!!.value
-                assertNotEquals(correlation1, correlation2)
+                val subCorrelation2 = coroutineContext[SubCorrelationId]!!.value
+                assertSubCorrelation(subCorrelation2)
+                assertNotEquals(subCorrelation1, subCorrelation2)
 
-                assertCorrelation()
-                assertSubCorrelation(correlation2)
-
+                // should generate new sub-correlation id
                 withSubCorrelation {
-                    val correlation3 = coroutineContext[SubCorrelationId]!!.value
-                    assertNotEquals(correlation1, correlation3)
-                    assertNotEquals(correlation2, correlation3)
-
-                    assertCorrelation()
-                    assertSubCorrelation(correlation3)
+                    val subCorrelation3 = coroutineContext[SubCorrelationId]!!.value
+                    assertSubCorrelation(subCorrelation3)
+                    assertNotEquals(subCorrelation1, subCorrelation3)
+                    assertNotEquals(subCorrelation2, subCorrelation3)
                 }
-                assertCorrelation()
-                assertSubCorrelation(correlation2)
-            }
-            assertCorrelation()
-            assertSubCorrelation(null)
-        }
-        assertCorrelation()
-        assertSubCorrelation(null)
-        clearThreadCorrelation()
-    }
 
-    private fun assertSubCorrelation(correlationId: String?) {
-        assertEquals(correlationId, MDC.get(MDC_SUB_CORRELATION_KEY))
+                // should retain correlation
+                assertSubCorrelation(subCorrelation2)
+            }.join()
+
+            // should retain correlation
+            assertSubCorrelation(subCorrelation1)
+        }
+
+        // should retain correlation
+        assertSubCorrelation(subCorrelation1)
+        clearThreadCorrelation()
     }
 }

@@ -1,10 +1,10 @@
 package koriit.kotlin.slf4j
 
+import kotlinx.coroutines.CoroutineExceptionHandler
+import org.slf4j.Logger
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 import kotlin.system.exitProcess
-import kotlinx.coroutines.CoroutineExceptionHandler
-import org.slf4j.Logger
 
 /**
  * Create block of code that is watched for any thrown exceptions.

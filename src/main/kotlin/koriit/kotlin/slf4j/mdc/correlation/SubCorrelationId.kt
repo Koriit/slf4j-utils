@@ -11,7 +11,7 @@ const val MDC_SUB_CORRELATION_KEY = "subCorrelationId"
 /**
  * Coroutine Context element holding correlation id.
  */
-internal class SubCorrelationId(
+class SubCorrelationId(
     value: String?
 ) : CoroutineMDCValue(MDC_SUB_CORRELATION_KEY, value, SubCorrelationId) {
 
@@ -24,4 +24,4 @@ internal class SubCorrelationId(
 /**
  * Empty sub-correlation. Clears sub-correlation if added to context.
  */
-internal val NoSubCorrelationId = SubCorrelationId(null)
+val NoSubCorrelationId = SubCorrelationId(null)
