@@ -17,7 +17,7 @@ class/file where logger object is defined.
 This allows precise control over your loggers.
 
 == Bridges
-This library also includes bridges that intercept JUL, JCL and Log4J log statements and pass them to SLF4J.
+This library also includes bridges that intercept JUL, JCL, and Log4J log statements and pass them to SLF4J.
 
 This is handy as there are many libraries and frameworks that do not use SLF4J
 and we usually want to see/control *all* of our logs.
@@ -31,7 +31,7 @@ According to SLF4J's http://www.slf4j.org/faq.html#fatal[FAQ]:
 [quote]
 The Marker interface, part of the org.slf4j package, renders the FATAL level largely redundant. If a given error requires attention beyond that allocated for ordinary errors, simply mark the logging statement with a specially designated marker which can be named "FATAL" or any other name to your liking.
 
-However, preparing such a marker and adding it to every fatal error can be a bit of tedious.
+However, preparing such a marker and adding it to every fatal error can be a bit tedious.
 Thus this library provides a set of `fatal` extension functions that do this for you.
 
 [WARNING]
@@ -40,7 +40,7 @@ output depends on your format, whether it includes markers in some way.
 
 == Exception Handling
 This library provides `watch` and `watched` extension functions on the `Logger` to
-create simple exception handler that just logs caught exception and eats it, or
+create a simple exception handler that just logs caught exception and eats it, or
 shuts down the JVM.
 
 It is useful in concurrent, long-lived workers, for example:
@@ -80,9 +80,9 @@ parentCoroutineContext += continueCorrelation() + LOG.watched(shutdown = true)
 == Correlation
 
 It may prove challenging to search for all logs related to a particular process, especially
-in applications which use any kind of concurrency as it leads to the interleaving of logs.
+in applications that use any kind of concurrency as it leads to the interleaving of logs.
 
-To solve this issue it is possible to add special correlation id to logs which belong to the same process.
+To solve this issue it is possible to add special correlation id to logs that belong to the same process.
 
 The easiest way to achieve that is by using thread-local MDC provided by SLF4j.
 

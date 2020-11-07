@@ -3,7 +3,8 @@ package koriit.kotlin.slf4j
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-private val loggerSuffix = """\$.*$""".toRegex()
+private val loggerSuffix =
+    """\$.*$""".toRegex()
 
 /**
  * Helper function to retrieve SLF4J Logger named after call site class.

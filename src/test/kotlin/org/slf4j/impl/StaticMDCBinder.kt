@@ -3,6 +3,9 @@ package org.slf4j.impl
 import org.slf4j.helpers.BasicMDCAdapter
 import org.slf4j.spi.MDCAdapter
 
+/**
+ * It overrides [org.slf4j.impl.StaticMDCBinder] (which binds [NOPMDCAdapter]) to bind [BasicMDCAdapter].
+ */
 class StaticMDCBinder private constructor() {
 
     companion object {
