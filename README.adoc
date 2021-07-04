@@ -48,12 +48,12 @@ It is useful in concurrent, long-lived workers, for example:
 .Logger.watch
 [source,kotlin]
 ----
-private val LOG = logger {}
+private val log = logger {}
 
 private val jobQueue = Channel<Job>(UNLIMITED)
 
 private val worker = launch(correlated()) {
-    with(LOG) {
+    with(log) {
         info("Started worker")
         watch(fatal = true) {
             for (job in jobQueue) {
@@ -74,7 +74,7 @@ private val worker = launch(correlated()) {
 [source,kotlin]
 ----
 // Ktor config
-parentCoroutineContext += continueCorrelation() + LOG.watched(shutdown = true)
+parentCoroutineContext += continueCorrelation() + log.watched(shutdown = true)
 ----
 
 == Correlation
