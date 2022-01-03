@@ -1,6 +1,6 @@
-package koriit.kotlin.slf4j.mdc.correlation
+package com.koriit.kotlin.slf4j.mdc.correlation
 
-import koriit.kotlin.slf4j.mdc.CoroutineMDCValue
+import com.koriit.kotlin.slf4j.mdc.CoroutineMDCValue
 import kotlin.coroutines.CoroutineContext
 
 /**

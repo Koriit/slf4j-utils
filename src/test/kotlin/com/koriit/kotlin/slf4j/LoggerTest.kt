@@ -1,4 +1,4 @@
-package koriit.kotlin.slf4j
+package com.koriit.kotlin.slf4j
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -18,9 +18,9 @@ class LoggerTest {
     fun `should compute full logger name`() {
         val functionLogger = logger {}
 
-        assertEquals("koriit.kotlin.slf4j.LoggerTestKt", topLogger.name)
-        assertEquals("koriit.kotlin.slf4j.LoggerTestKt", topFunctionLogger().name)
-        assertEquals("koriit.kotlin.slf4j.LoggerTest", classLogger.name)
-        assertEquals("koriit.kotlin.slf4j.LoggerTest", functionLogger.name)
+        assertEquals("com.koriit.kotlin.slf4j.LoggerTestKt", topLogger.name)
+        assertEquals("com.koriit.kotlin.slf4j.LoggerTestKt", topFunctionLogger().name)
+        assertEquals("com.koriit.kotlin.slf4j.LoggerTest", classLogger.name)
+        assertEquals("com.koriit.kotlin.slf4j.LoggerTest", functionLogger.name)
     }
 }

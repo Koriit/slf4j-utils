@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package koriit.kotlin.slf4j
+package com.koriit.kotlin.slf4j
 
 import org.slf4j.Logger
 import org.slf4j.Marker

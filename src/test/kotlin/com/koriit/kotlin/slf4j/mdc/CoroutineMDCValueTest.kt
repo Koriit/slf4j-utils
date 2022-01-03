@@ -1,6 +1,6 @@
-package koriit.kotlin.slf4j.mdc
+package com.koriit.kotlin.slf4j.mdc
 
-import koriit.kotlin.slf4j.mdc.correlation.SubCorrelationId
+import com.koriit.kotlin.slf4j.mdc.correlation.SubCorrelationId
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals

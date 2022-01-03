@@ -1,4 +1,4 @@
-package koriit.kotlin.slf4j
+package com.koriit.kotlin.slf4j
 
 import kotlinx.coroutines.CoroutineExceptionHandler
 import org.slf4j.Logger

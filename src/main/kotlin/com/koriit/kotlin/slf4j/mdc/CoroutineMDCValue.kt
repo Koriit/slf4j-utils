@@ -1,4 +1,4 @@
-package koriit.kotlin.slf4j.mdc
+package com.koriit.kotlin.slf4j.mdc
 
 import kotlinx.coroutines.ThreadContextElement
 import org.slf4j.MDC

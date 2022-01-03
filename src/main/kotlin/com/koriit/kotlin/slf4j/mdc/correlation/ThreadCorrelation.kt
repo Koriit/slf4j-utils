@@ -1,4 +1,4 @@
-package koriit.kotlin.slf4j.mdc.correlation
+package com.koriit.kotlin.slf4j.mdc.correlation
 
 import org.slf4j.MDC
 
