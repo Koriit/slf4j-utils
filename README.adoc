@@ -1,10 +1,10 @@
 = SLF4J Utils
 
-image:https://www.travis-ci.org/Koriit/slf4j-utils.svg?branch=master["Build Status", link="https://www.travis-ci.org/Koriit/slf4j-utils"]
+image:https://github.com/Koriit/slf4j-utils/actions/workflows/build.yaml/badge.svg[Build, link="https://github.com/Koriit/slf4j-utils/actions/workflows/build.yaml"]
 image:https://www.codefactor.io/repository/github/koriit/slf4j-utils/badge[CodeFactor,link=https://www.codefactor.io/repository/github/koriit/slf4j-utils]
 image:https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg[ktlint,link=https://ktlint.github.io/]
 
-image:https://api.bintray.com/packages/koriit/kotlin/slf4j-utils/images/download.svg[Download, link=https://bintray.com/koriit/kotlin/slf4j-utils/_latestVersion]
+image:https://img.shields.io/maven-central/v/com.koriit.kotlin/slf4j-utils.svg?label=Maven%20Central[Maven Central, link="https://search.maven.org/search?q=g:%22com.koriit.kotlin%22%20AND%20a:%22slf4j-utils%22"]
 image:https://img.shields.io/github/license/koriit/slf4j-utils[GitHub]
 
 SLF4J utils for Kotlin.
