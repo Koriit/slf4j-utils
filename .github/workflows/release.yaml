@@ -7,11 +7,6 @@ jobs:
     name: 'Release'
     runs-on: ubuntu-latest
     environment: release
-    env:
-      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-      PGP_SIGNING_KEY: ${{ secrets.PGP_SIGNING_KEY }}
-      PGP_SIGNING_PASSWORD: ${{ secrets.PGP_SIGNING_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
       - uses: gradle/wrapper-validation-action@v1
@@ -21,3 +16,8 @@ jobs:
           distribution: 'temurin'
           java-version: '8'
       - run: ./gradlew build publish -Pversion=$GITHUB_REF_NAME
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          PGP_SIGNING_KEY: ${{ secrets.PGP_SIGNING_KEY }}
+          PGP_SIGNING_PASSWORD: ${{ secrets.PGP_SIGNING_PASSWORD }}
